@@ -1,0 +1,465 @@
+/* ============================================================
+ * 识点·Pin Pro - 全局 Mac 风格样式（在 Element Plus + Tailwind 之上再定义一层变量/工具类）
+ * 目标：彻底覆盖原生控件 → 看起来像 macOS App（毛玻璃 / 圆角 / 留白 / 柔和阴影 / 流畅过渡）
+ * ============================================================ */
+
+:root {
+  /* 主色板 — 源自 macOS System Colors，可覆盖 Tailwind 的 mac:* */
+  --mac-window-bg: rgba(245, 245, 247, 0.78);
+  --mac-window-bg-solid: #f5f5f7;
+  --mac-sidebar-bg: rgba(236, 236, 240, 0.68);
+  --mac-sidebar-bg-solid: #ececf0;
+  --mac-card-bg: rgba(255, 255, 255, 0.82);
+  --mac-card-bg-solid: #ffffff;
+  --mac-border: rgba(0, 0, 0, 0.07);
+  --mac-border-strong: rgba(0, 0, 0, 0.12);
+  --mac-text: #1d1d1f;
+  --mac-text-secondary: #6e6e73;
+  --mac-text-tertiary: #86868b;
+  --mac-accent: #0a84ff;
+  --mac-accent-hover: #0060df;
+  --mac-danger: #ff3b30;
+  --mac-warning: #ff9500;
+  --mac-success: #32d74b;
+
+  --mac-radius-xs: 6px;
+  --mac-radius-sm: 8px;
+  --mac-radius: 12px;
+  --mac-radius-lg: 16px;
+  --mac-radius-xl: 20px;
+
+  --mac-shadow: 0 10px 30px rgba(0, 0, 0, 0.10), 0 2px 6px rgba(0, 0, 0, 0.04);
+  --mac-shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.18), 0 4px 14px rgba(0, 0, 0, 0.06);
+  --mac-inset-shadow: inset 0 0 0 0.5px var(--mac-border);
+
+  --mac-blur: saturate(180%) blur(24px);
+
+  --mac-trans-fast: 120ms cubic-bezier(0.2, 0, 0, 1);
+  --mac-trans: 200ms cubic-bezier(0.2, 0, 0, 1);
+  --mac-trans-slow: 320ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* 暗色模式（系统跟随） */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --mac-window-bg: rgba(30, 30, 32, 0.82);
+    --mac-window-bg-solid: #1e1e20;
+    --mac-sidebar-bg: rgba(42, 42, 46, 0.74);
+    --mac-sidebar-bg-solid: #2a2a2e;
+    --mac-card-bg: rgba(48, 48, 54, 0.82);
+    --mac-card-bg-solid: #303036;
+    --mac-border: rgba(255, 255, 255, 0.08);
+    --mac-border-strong: rgba(255, 255, 255, 0.14);
+    --mac-text: #f5f5f7;
+    --mac-text-secondary: #a1a1a6;
+    --mac-text-tertiary: #8e8e93;
+    --mac-accent: #0a84ff;
+    --mac-shadow: 0 10px 30px rgba(0, 0, 0, 0.45), 0 2px 6px rgba(0, 0, 0, 0.25);
+  }
+}
+
+/* ================== 基础重置 ================== */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+}
+
+html, body, #app {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+    "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    "Segoe UI", Arial, sans-serif;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--mac-text);
+  background: transparent;
+  letter-spacing: 0.01em;
+}
+
+body {
+  /* 主窗口本身就是毛玻璃（由 Tauri 的 decorations=false + transparent=true 后加这层） */
+  background: var(--mac-window-bg);
+  backdrop-filter: var(--mac-blur);
+  -webkit-backdrop-filter: var(--mac-blur);
+  overflow: hidden;
+}
+
+/* 选中文字 */
+::selection {
+  background: var(--mac-accent);
+  color: #fff;
+}
+
+/* 滚动条 — macOS 风格（隐藏式圆角） */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(128, 128, 128, 0.35);
+  border-radius: 100px;
+  border: 1.5px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(128, 128, 128, 0.6);
+  background-clip: padding-box;
+  border: 1.5px solid transparent;
+}
+
+/* ================== Mac 通用工具类（和 Tailwind 并存） ================== */
+.mac-card {
+  background: var(--mac-card-bg);
+  backdrop-filter: var(--mac-blur);
+  -webkit-backdrop-filter: var(--mac-blur);
+  border: 1px solid var(--mac-border);
+  border-radius: var(--mac-radius);
+  box-shadow: var(--mac-shadow);
+  transition: transform var(--mac-trans-fast), box-shadow var(--mac-trans-fast), border-color var(--mac-trans-fast);
+}
+.mac-card:hover {
+  border-color: var(--mac-border-strong);
+  box-shadow: var(--mac-shadow-lg);
+}
+
+.mac-sidebar {
+  background: var(--mac-sidebar-bg);
+  backdrop-filter: var(--mac-blur);
+  -webkit-backdrop-filter: var(--mac-blur);
+  border-right: 1px solid var(--mac-border);
+}
+
+.mac-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--mac-radius-xs);
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid var(--mac-border-strong);
+  color: var(--mac-text);
+  font-size: 13px;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: all var(--mac-trans-fast);
+  font-family: inherit;
+}
+@media (prefers-color-scheme: dark) {
+  .mac-btn { background: rgba(255,255,255,0.06); }
+}
+.mac-btn:hover {
+  background: rgba(255,255,255,0.86);
+  border-color: rgba(0,0,0,0.18);
+}
+.mac-btn:active { transform: translateY(0.5px) scale(0.99); }
+
+.mac-btn-primary {
+  background: var(--mac-accent);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.28) inset, 0 6px 16px rgba(10, 132, 255, 0.32);
+}
+.mac-btn-primary:hover {
+  background: var(--mac-accent-hover);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.28) inset, 0 10px 22px rgba(10, 132, 255, 0.42);
+}
+
+.mac-btn-danger {
+  background: var(--mac-danger);
+  color: #fff;
+  border-color: transparent;
+}
+
+.mac-btn-ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--mac-text-secondary);
+}
+.mac-btn-ghost:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--mac-text);
+}
+
+/* 交通灯区（关闭/最小化/最大化） */
+.mac-traffic {
+  display: flex;
+  gap: 8px;
+  padding-left: 14px;
+  align-items: center;
+}
+.mac-traffic > div {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  transition: filter var(--mac-trans-fast);
+}
+.mac-traffic .c-close    { background: #ff5f57; }
+.mac-traffic .c-minimize { background: #febc2e; }
+.mac-traffic .c-maximize { background: #28c840; }
+.mac-traffic:hover > div { filter: brightness(1.05); }
+
+/* 侧边栏项目 */
+.mac-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 12px;
+  margin: 1px 8px;
+  border-radius: 8px;
+  color: var(--mac-text-secondary);
+  font-size: 13.5px;
+  cursor: pointer;
+  user-select: none;
+  transition: all var(--mac-trans-fast);
+  position: relative;
+}
+.mac-nav-item:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--mac-text);
+}
+.mac-nav-item.active {
+  background: var(--mac-accent);
+  color: #fff;
+  font-weight: 500;
+  box-shadow: 0 2px 6px rgba(10, 132, 255, 0.35);
+}
+@media (prefers-color-scheme: dark) {
+  .mac-nav-item:hover { background: rgba(255,255,255,0.06); }
+}
+.mac-nav-item .badge {
+  margin-left: auto;
+  background: rgba(0,0,0,0.08);
+  color: inherit;
+  font-size: 11px;
+  border-radius: 999px;
+  padding: 1px 7px;
+}
+.mac-nav-item.active .badge { background: rgba(255,255,255,0.2); }
+.mac-nav-group {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--mac-text-tertiary);
+  padding: 14px 20px 6px;
+  font-weight: 600;
+}
+
+/* 输入控件通用：El-* 的 Mac 化 */
+.mac-input,
+.mac-select,
+.mac-textarea,
+.el-input__wrapper,
+.el-select__wrapper,
+.el-textarea__inner {
+  background: var(--mac-card-bg-solid) !important;
+  border: 1px solid var(--mac-border-strong) !important;
+  border-radius: var(--mac-radius-xs) !important;
+  color: var(--mac-text) !important;
+  box-shadow: none !important;
+  transition: all var(--mac-trans-fast) !important;
+}
+.el-input__wrapper:hover,
+.el-select__wrapper:hover,
+.el-textarea__inner:hover {
+  border-color: rgba(128,128,128,0.5) !important;
+}
+.el-input__wrapper.is-focus,
+.el-select__wrapper.is-focused,
+.el-textarea__inner:focus {
+  border-color: var(--mac-accent) !important;
+  box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.18) !important;
+}
+
+/* 弹窗 / Dialog */
+.el-overlay {
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  background: rgba(0,0,0,0.25) !important;
+}
+.el-dialog {
+  border-radius: var(--mac-radius-lg) !important;
+  background: var(--mac-window-bg-solid) !important;
+  backdrop-filter: var(--mac-blur);
+  box-shadow: var(--mac-shadow-lg) !important;
+  border: 1px solid var(--mac-border) !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+}
+.el-dialog__header {
+  padding: 18px 22px 14px !important;
+  border-bottom: 1px solid var(--mac-border) !important;
+  margin: 0 !important;
+}
+.el-dialog__title {
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  color: var(--mac-text) !important;
+}
+.el-dialog__body {
+  padding: 20px 22px !important;
+  color: var(--mac-text) !important;
+}
+.el-dialog__footer {
+  padding: 14px 22px 18px !important;
+  border-top: 1px solid var(--mac-border) !important;
+  background: rgba(0,0,0,0.02);
+}
+@media (prefers-color-scheme: dark) {
+  .el-dialog__footer { background: rgba(255,255,255,0.02); }
+}
+.el-button {
+  border-radius: var(--mac-radius-xs) !important;
+  padding: 8px 16px !important;
+  font-size: 13px !important;
+  transition: all var(--mac-trans-fast) !important;
+}
+.el-button--primary {
+  background: var(--mac-accent) !important;
+  border-color: var(--mac-accent) !important;
+}
+.el-button--primary:hover {
+  background: var(--mac-accent-hover) !important;
+  border-color: var(--mac-accent-hover) !important;
+}
+.el-button--default {
+  background: var(--mac-card-bg-solid) !important;
+  border-color: var(--mac-border-strong) !important;
+  color: var(--mac-text) !important;
+}
+.el-button--danger {
+  background: var(--mac-danger) !important;
+  border-color: var(--mac-danger) !important;
+}
+
+/* Drawer */
+.el-drawer {
+  background: var(--mac-window-bg-solid) !important;
+  backdrop-filter: var(--mac-blur);
+  -webkit-backdrop-filter: var(--mac-blur);
+}
+.el-drawer__header {
+  padding: 18px 22px 14px !important;
+  border-bottom: 1px solid var(--mac-border) !important;
+  margin-bottom: 0 !important;
+}
+
+/* 表格 */
+.el-table {
+  --el-table-bg-color: transparent !important;
+  --el-table-border-color: var(--mac-border) !important;
+  --el-table-header-bg-color: rgba(0,0,0,0.02) !important;
+  --el-table-tr-bg-color: transparent !important;
+  --el-table-row-hover-bg-color: rgba(10, 132, 255, 0.08) !important;
+  color: var(--mac-text) !important;
+  font-size: 13px !important;
+}
+.el-table th.el-table__cell {
+  font-weight: 600 !important;
+  color: var(--mac-text-secondary) !important;
+  background: var(--el-table-header-bg-color) !important;
+}
+.el-table::before, .el-table--border::after {
+  display: none !important;
+}
+
+/* 标签页 */
+.el-tabs__item {
+  font-weight: 500 !important;
+  color: var(--mac-text-secondary) !important;
+}
+.el-tabs__item.is-active {
+  color: var(--mac-text) !important;
+}
+.el-tabs__active-bar {
+  background: var(--mac-accent) !important;
+  height: 2.5px !important;
+}
+.el-tabs__nav-wrap::after { background: var(--mac-border) !important; }
+
+/* Tag */
+.el-tag {
+  border-radius: 999px !important;
+  padding: 0 10px !important;
+  border: none !important;
+  font-size: 12px !important;
+  line-height: 22px !important;
+  height: 22px !important;
+}
+
+/* 热键显示（Caps/Ctrl 键样式） */
+.kbd {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: var(--mac-card-bg-solid);
+  border: 1px solid var(--mac-border-strong);
+  border-bottom-width: 2px;
+  color: var(--mac-text);
+  font-size: 11.5px;
+  font-weight: 600;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  min-width: 18px;
+  text-align: center;
+  margin: 0 2px;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+}
+
+/* 动画类 */
+.fade-in    { animation: fadeIn 240ms cubic-bezier(0.2, 0, 0, 1) both; }
+.slide-up   { animation: slideUp 280ms cubic-bezier(0.2, 0, 0, 1) both; }
+.slide-in-right { animation: slideInRight 260ms cubic-bezier(0.2, 0, 0, 1) both; }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(14px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* 无障碍：减少动画 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0ms !important;
+    transition-duration: 0ms !important;
+  }
+}
+
+/* 空状态 */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--mac-text-tertiary);
+}
+.empty-state .icon {
+  font-size: 48px;
+  margin-bottom: 14px;
+  opacity: 0.55;
+}
+.empty-state .title {
+  font-size: 15px;
+  color: var(--mac-text-secondary);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+.empty-state .desc {
+  font-size: 13px;
+  max-width: 420px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* 拖拽区域（Tauri drag-region） */
+.drag-region { -webkit-app-region: drag; cursor: default; }
+.no-drag, button, a, input, select, textarea, .el-* { -webkit-app-region: no-drag; }

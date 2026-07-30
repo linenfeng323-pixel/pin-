@@ -1,0 +1,45 @@
+# =====================================================
+# GitHub Actions：自动在 Windows 上编译出 .msi / .exe
+# 推送到 GitHub 后，Actions 自动编译，你直接下载安装包
+# =====================================================
+
+name: Build Windows
+
+on:
+  push:
+    tags: ['v*']          # 打 tag 自动触发
+  workflow_dispatch:       # 也可手动触发
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install frontend deps
+        run: npm install
+
+      - name: Build Tauri app
+        run: npm run tauri:build
+        env:
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_KEY }}
+
+      - name: Upload MSI
+        uses: actions/upload-artifact@v4
+        with:
+          name: ShidianPin-windows-msi
+          path: src-tauri/target/release/bundle/msi/*.msi
+
+      - name: Upload NSIS EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: ShidianPin-windows-exe
+          path: src-tauri/target/release/bundle/nsis/*.exe

@@ -1,0 +1,28 @@
+[package]
+name = "knowledge-pin-pro"
+version = "0.1.0"
+description = "识点·Pin Pro - 三合一知识点位卡片 + 瞄点圆圈 Overlay"
+authors = ["KPP Team"]
+edition = "2021"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+anyhow = "1"
+thiserror = "1"
+
+[features]
+# 默认：生产构建禁用 devtools
+default = ["custom-protocol"]
+custom-protocol = ["tauri/custom-protocol"]
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true

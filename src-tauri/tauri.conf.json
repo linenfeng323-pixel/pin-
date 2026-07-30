@@ -1,0 +1,69 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "识点Pin",
+  "version": "0.1.0",
+  "identifier": "com.kpp.knowledgepinpro",
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:1420",
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "识点 · Pin Pro",
+        "width": 1280,
+        "height": 820,
+        "minWidth": 960,
+        "minHeight": 640,
+        "resizable": true,
+        "fullscreen": false,
+        "decorations": true,
+        "transparent": false,
+        "center": true
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "category": "Utilities",
+    "shortDescription": "三合一知识点位卡片工具",
+    "longDescription": "识点·Pin Pro 是一款三合一（站位+瞄准+落点）卡片管理 + 游戏瞄点圆圈叠加层的知识管理工具，支持 OCR 自动识别小地图文字、自定义按键、GitHub 在线更新、ZIP 备份导入导出。",
+    "windows": {
+      "wix": {
+        "language": "zh-CN",
+        "upgradeCode": "2D9C5E7F-3A1B-4C8D-9E6F-0A7B2C3D4E5F"
+      }
+    },
+    "macOS": {
+      "frameworks": [],
+      "minimumSystemVersion": "10.15"
+    },
+    "linux": {
+      "deb": { "depends": [] }
+    }
+  },
+  "plugins": {
+    "updater": {
+      "enabled": true,
+      "endpoints": [
+        "https://releases.my-domain.com/knowledgepinpro/latest-{{target}}.json",
+        "https://github.com/KnowledgePinPro/knowledge-pin-pro/releases/download/latest-{{channel}}.json"
+      ],
+      "pubkey": ""
+    }
+  }
+}
