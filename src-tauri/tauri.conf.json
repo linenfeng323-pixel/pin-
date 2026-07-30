@@ -60,8 +60,7 @@
     "updater": {
       "enabled": true,
       "endpoints": [
-        "https://releases.my-domain.com/knowledgepinpro/latest-{{target}}.json",
-        "https://github.com/KnowledgePinPro/knowledge-pin-pro/releases/download/latest-{{channel}}.json"
+        "https://github.com/linenfeng323-pixel/pin-/releases/latest/download/latest.json"
       ],
       "pubkey": ""
     }

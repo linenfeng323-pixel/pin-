@@ -462,4 +462,4 @@ body {
 
 /* 拖拽区域（Tauri drag-region） */
 .drag-region { -webkit-app-region: drag; cursor: default; }
-.no-drag, button, a, input, select, textarea, .el-* { -webkit-app-region: no-drag; }
+.no-drag, button, a, input, select, textarea, [class*="el-"] { -webkit-app-region: no-drag; }

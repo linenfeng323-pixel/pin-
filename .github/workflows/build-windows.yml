@@ -30,8 +30,10 @@ jobs:
 
       - name: Build Tauri app
         run: npm run tauri:build
-        env:
-          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_KEY }}
+        # 注意：发布签名版本时，需要在仓库 Settings → Secrets 添加 TAURI_SIGNING_KEY，
+        # 然后取消下面这行的注释：
+        # env:
+        #   TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_KEY }}
 
       - name: Upload MSI
         uses: actions/upload-artifact@v4
